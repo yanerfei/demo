@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+</body>
+</html>
+<script>
+    var picsnames = ["background.png",  "enemy1.png", "enemy2.png", "enemy3.png" ];
+    var picCount = 0;
+    var canvas = document.getElementById('canvas');
+    canvas.width = document.documentElement.clientWidth;
+    canvas.height = document.documentElement.clientHeight;
+    var ctx = canvas.getContext('2d');
+    //background 逻辑
+    for(var i = 0; i < picsnames.length; i++) {
+    var img = new Image();
+    img.src = "../img/" + picsnames[i];
+        img.onload = function() {
+                picCount++;
+            //判断图片是否加载完成
+            if(picCount == picsnames.length) {
+                main();
+            }
+        }
+    }
+
+
+    //设置random函数
+        function random(x,y){
+            return parseInt(Math.random()*(y-x+1)+x)
+        }
+    //设置random函数
+
+
+
+
+    //---------------------------------------------------------------------
+    //敌机逻辑
+    //敌机有多个,需要重复创建
+    //--------------------------敌机对象创建开始---------------------------------
+        function Enemy(x,y,w,h,img,speed,hp,maxI){
+            this.x = x;
+            this.y = y;
+            this.w = w;
+            this.h = h;
+            this.boom = false;
+            this.img = img;
+            this.speed = speed;
+            this.hp = hp;
+            this.i = 0;
+            this.maxI = maxI;//切换的图片最大张数
+            this.isDie = false;
+            this.flagI = 0;
+
+        }
+
+        Enemy.prototype.draw = function (){
+            if(this.boom){
+                this.flagI++
+                if(this.flagI == 5){
+                    this.i++;
+                    if(this.i == this.maxI){
+                        isDie = true;
+                    }
+                }
+            }
+            //由于使用精灵图,需要确定图片张数位置
+            ctx.drawImage(this.img,this.w*this.i,0,this.w,this.h,this.x,this.y,this.w,this.h);
+        }
+        Enemy.prototype.move = function (){
+            //移动y轴,y轴逐渐增大;
+            this.y+=this.speed;
+        }
+    //--------------------------敌机对象创建结束---------------------------------
+    
+    //图片创建
+    var enemy1 = new Image();
+    enemy1.src = "../img/enemy1.png";
+    var enemy2 = new Image();
+    enemy2.src = "../img/enemy2.png";
+    var enemy3 = new Image();
+    enemy3.src = "../img/enemy3.png";
+    var enemies = [];
+    function randomEnemy(){
+        var enemyNum = random(0,1000);
+        if(enemyNum<=50){
+            if(enemyNum<=40){//小飞机
+                //随机位置
+                var randomX = random(0,canvas.width-38);
+                //随机速度
+                var randomSpeed =random(2,10);
+                //创建飞机
+                var enemy = new Enemy(randomX,-34,38,34,enemy1,randomSpeed,1,5)
+                //加入数组
+                enemies.push(enemy)
+            }else if(enemyNum<=48){
+                var randomX = random(0,canvas.width-46);
+                //随机速度
+                var randomSpeed =random(2,6);
+                //创建飞机
+                var enemy = new Enemy(randomX,-64,46,64,enemy2,randomSpeed,5,6)
+                enemies.push(enemy)
+            }else{
+                var randomX = random(0,canvas.width-110);
+                //随机速度
+                var randomSpeed =random(2,4);
+                //创建飞机
+                var enemy = new Enemy(randomX,-164,110,164,enemy3,randomSpeed,10,10)
+                enemies.push(enemy)
+            }
+        }
+        for(var i = 0;i<enemies.length;i++){
+            //判断飞出屏幕清除
+            if(enemies[i].y>canvas.y||enemies[i].isDie==true){
+                enemies.splice(i,1);
+                i--;
+            }
+            enemies[i].move();
+            enemies[i].draw();
+        }
+    }
+    
+    function main() {
+        requestAnimationFrame(main);
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        var background = new Image();
+        background.src = "../img/background.png";
+        var row = Math.ceil(canvas.height/568);
+        var col = Math.ceil(canvas.width/320);
+        for(var i = -row;i<row;i++){
+            for(var j = 0;j < col; j++){
+                ctx.drawImage(background,j*320,i*568);
+            }
+        }
+        randomEnemy();
+    }
+                  
+
+</script>

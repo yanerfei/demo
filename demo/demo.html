@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+</body>
+</html>
+<script>
+	function jilao(){
+		document.write("基佬康&nbsp")
+	}
+
+
+	function change(func){
+		function deco(){
+			document.write("绿帽侠")
+			func()
+		}
+		return deco;
+	}
+
+	jilao = change(jilao)
+
+	setInterval(jilao, 500)
+
+
+</script>

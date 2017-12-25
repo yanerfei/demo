@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+</body>
+
+</html>
+<script>
+    var picsnames = ["background.png", "bullet1.png", "bullet2.png", "enemy1.png", "enemy2.png", "enemy3.png", "herofly.png", "loading.gif", "prop.png"];
+    var picCount = 0;
+
+
+
+
+    var canvas = document.getElementById('canvas');
+    canvas.width = document.documentElement.clientWidth;
+    canvas.height = document.documentElement.clientHeight;
+    var ctx = canvas.getContext('2d');
+    //background 逻辑
+
+
+
+    for (var i = 0; i < picsnames.length; i++) {
+        var img = new Image();
+        img.src = "../img/" + picsnames[i];
+        img.onload = function () {
+            picCount++;
+            //判断图片是否加载完成
+            if (picCount == picsnames.length) {
+                main();
+            }
+        }
+    }
+
+
+
+    function random(x, y) {
+        return parseInt(Math.random() * (y - x +1) + x)
+    }
+
+    //补给逻辑
+    //多次创建,创建构造函数
+    var propImg = new Image();
+    propImg.src = "../img/prop.png"
+    function Prop(x, y, w, h, type, speed) {
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+        this.type = type;
+        this.speed = speed;
+        this.isDie = false;
+    }
+    Prop.prototype.draw = function () {
+        ctx.drawImage(propImg, this.type * this.w, 0, this.w, this.h, this.x, this.y, this.w, this.h);
+    }
+    Prop.prototype.move = function () {
+        this.y += this.speed;
+    }
+
+
+
+    //random函数
+    
+
+    //随机产生补给
+    var props = [];
+    function randomProp(){
+        var num = random(1,1000);
+        if(num<=20){
+            var randomX = random(0,canvas.width-38);
+            var randomType = random(0,1);
+            var randomSpeed = random(5,10);
+            var prop = new Prop(randomX,-68,38,68,randomType,randomSpeed);
+            props.push(prop);
+        }
+        for(var i =0;i<props.length;i++){
+            props[i].draw();
+            props[i].move();
+
+        }
+    }
+
+
+
+
+
+
+
+
+    function main() {
+        requestAnimationFrame(main);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        var background = new Image();
+        background.src = "../img/background.png";
+        var row = Math.ceil(canvas.height / 568);
+        var col = Math.ceil(canvas.width / 320);
+        for (var i = -row; i < row; i++) {
+            for (var j = 0; j < col; j++) {
+                ctx.drawImage(background, j * 320, i * 568);
+            }
+        }
+        randomProp()
+
+    }
+</script>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <!-- <img src="./img/background.png" alt="" id="imgs"> -->
+    <!-- <div class="box">
+       <img src="./img/background.png" alt="">
+    </div> -->
+</body>
+</html>
+<script>
+    var canvas = document.getElementById('canvas');
+    canvas.width = document.documentElement.clientWidth;
+    canvas.height = document.documentElement.clientHeight;
+    var ctx = canvas.getContext("2d");
+   
+    var imgs = new Image();
+    
+    imgs.src = "../img/background.png";
+   
+   
+
+    var row = Math.ceil(canvas.height / 568);//比例缩放
+    var col = Math.ceil(canvas.width / 320);//比例缩放
+    //2.循环添加图片
+// ------------为了保证图片无限滚动, 画两张一样的背景图---------------------------
+    imgs.onload = function(){
+        for(var i = -row; i < row; i++){ //行
+    //------------为了保证图片无限滚动, 画两张一样的背景图---------------------------
+            for(var j = 0; j < col; j++){ //列
+                //drawImage(图片,x坐标,y坐标)
+                ctx.drawImage(imgs, 320 * j, 568 * i);
+            }
+        }
+    }
+   
+</script>

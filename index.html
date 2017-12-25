@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=0.7,user-scalable=no" />
+		<title>微信打飞机</title>
+		<style type="text/css">
+		
+			
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			#map {
+				display: block;
+			}			
+			#loading {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				text-align: center;
+				transform: translate(-50%, -50%);
+			}
+			
+			#score {
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+			
+			#menu {
+				width: 160px;
+				height: 160px;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				list-style-type: none;
+				text-align: center;
+				border: 1px solid black;
+				border-radius: 5px;
+				background-color: #BBC1C2;
+				font-size: 20px;
+				line-height: 40px;
+				display: none;
+			}
+			
+			#end-score {
+				line-height: 80px;
+				border-top: 1px solid black;
+				border-bottom: 1px solid black;
+			}
+			
+			#restart {
+				cursor: pointer;
+			
+			}
+		</style>
+		
+	</head>
+
+	<body>
+		<!--游戏地图-->
+		<canvas id="map"></canvas>
+		<!--加载-->
+		<div id="loading">
+			<img src="img/loading.gif" />
+			<p>游戏加载中</p>
+		</div>
+		<!--分数-->
+		<p id="score">分数: <span>0</span></p>
+		<!--菜单-->
+		<ul id="menu">
+			<li>飞机大战分数</li>
+			<li id="end-score">0</li>
+			<li id="restart">重新开始</li>
+		</ul>
+
+		
+	</body>
+
+</html>
+<script src="./js/index.js"></script>
